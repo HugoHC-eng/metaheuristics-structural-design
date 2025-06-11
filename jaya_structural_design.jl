@@ -1,27 +1,26 @@
 
-# Jaya Algorithm in Julia for Structural Design Optimization
-
+## Jaya Algorithm in Julia for Structural Design Optimization
 using Random
 using Printf
 using Plots
 
-# Constants
+## Constants
 sigma = 6         # allowable stress (kN/cm²)
 E = 20000         # modulus of elasticity (kN/cm²)
 P = 600           # vertical load (kN)
 L = 200           # beam length (cm)
 
-# Algorithm parameters
+## Algorithm parameters
 maxiter = 200
 pn = 15
 
-# Variable bounds
+## Variable bounds
 hmin, hmax = 10.0, 80.0
 bmin, bmax = 10.0, 50.0
 twmin, twmax = 0.9, 5.0
 tfmin, tfmax = 0.9, 5.0
 
-# Initialize population
+## Initialize population
 OPT = zeros(7, pn)
 for i in 1:pn
     h = hmin + (hmax - hmin) * rand()
@@ -44,10 +43,10 @@ for i in 1:pn
     OPT[:, i] .= [h, b, tw, tf, Fx, g1, g2]
 end
 
-# Store best value at each iteration
+## Store best value at each iteration
 best_history = zeros(maxiter)
 
-# Main loop
+## Main loop
 for iter in 1:maxiter
     OPT1 = zeros(7, pn)
     r = argmin(OPT[5, :])
@@ -94,14 +93,14 @@ for iter in 1:maxiter
     best_history[iter] = minimum(OPT[5, :])
 end
 
-# Plot convergence
+## Plot convergence
 plt=plot(best_history, lw=2, xlabel="Iteration", ylabel="Minimum Objective Function (Deflection Proxy)",
      title="Convergence of Jaya Algorithm", grid=true)
 
 display(plt)
 
 
-# Show final best design
+## Show final best design
 idx_best = argmin(OPT[5, :])
 final = OPT[:, idx_best]
 println("\n🏆 Best Design Found:")
